@@ -230,21 +230,44 @@ window.openPaymentFromCart = () => {
 // --- Contact Form Handling ---
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
-        // Change button text to indicate loading
+
         const btn = contactForm.querySelector('.btn-submit');
         const originalText = btn.innerHTML;
+
+        // Form Data
+        const formData = new FormData(contactForm);
+
+        // Change button text to indicate loading
         btn.innerHTML = 'Mengirim... <i class="fa-solid fa-spinner fa-spin" style="margin-left: 8px;"></i>';
         btn.disabled = true;
 
-        // Simulate API sending delay
-        setTimeout(() => {
-            alert('Terima kasih! Pesan Anda telah berhasil dikirim. Kami akan membalasnya segera.');
-            contactForm.reset();
+        try {
+            const response = await fetch(contactForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                alert('Terima kasih! Pesan Anda telah berhasil dikirim ke bimaardi0398@gmail.com. Kami akan membalasnya segera.');
+                contactForm.reset();
+            } else {
+                const data = await response.json();
+                if (Object.hasOwn(data, 'errors')) {
+                    alert(data["errors"].map(error => error["message"]).join(", "));
+                } else {
+                    alert('Maaf, terjadi kesalahan saat mengirim pesan. Silakan coba lagi nanti.');
+                }
+            }
+        } catch (error) {
+            alert('Maaf, terjadi masalah koneksi. Silakan periksa koneksi internet Anda.');
+        } finally {
             btn.innerHTML = originalText;
             btn.disabled = false;
-        }, 1200);
+        }
     });
 }
