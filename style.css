@@ -401,11 +401,30 @@ a {
     border-radius: 24px;
     width: 90%;
     max-width: 500px;
+    max-height: 90vh;
+    /* Allow modal to fit screen height */
+    overflow-y: auto;
+    /* Enable internal scrolling if content is too large */
     padding: 2.5rem;
     position: relative;
     transform: translateY(50px) scale(0.9);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    scrollbar-width: thin;
+}
+
+/* Custom Scrollbar for Modal Content */
+.modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
 }
 
 .modal-overlay.active .modal-content {
@@ -754,6 +773,28 @@ footer {
     /* Simplified for mobile */
     .footer-content {
         flex-direction: column;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+        width: 95%;
+        max-height: 85vh;
+        border-radius: 16px;
+    }
+
+    .modal-header h2 {
+        font-size: 1.4rem;
+    }
+
+    .modal-header p {
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .cart-sidebar {
+        width: 100%;
+        max-width: 100%;
+        padding: 1.5rem;
     }
 }
 
