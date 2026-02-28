@@ -606,6 +606,115 @@ a {
     background: #e5e7eb;
 }
 
+/* ===== Contact Section ===== */
+.contact-section {
+    padding: 6rem 5%;
+    background: var(--secondary);
+    position: relative;
+}
+
+.contact-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    background: var(--white);
+    border-radius: 24px;
+    overflow: hidden;
+    /* Seamless container edges */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+    /* Premium shadow */
+}
+
+/* Accent Panel (Left) */
+.contact-info {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: var(--white);
+    padding: 3.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.contact-info h3 {
+    font-size: 1.8rem;
+    color: var(--white);
+    margin-bottom: 2.5rem;
+    font-family: 'Outfit', sans-serif;
+    position: relative;
+    display: inline-block;
+}
+
+.contact-info h3::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 3px;
+    background: var(--accent);
+    bottom: -10px;
+    left: 0;
+    border-radius: 2px;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.info-item i {
+    font-size: 1.3rem;
+    color: var(--primary-dark);
+    background: var(--white);
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+}
+
+.info-item:hover i {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.info-item h4 {
+    color: var(--white);
+    margin-bottom: 0.4rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+.info-item p {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Form Section (Right) */
+.contact-form-wrapper {
+    background: var(--white);
+    padding: 3.5rem;
+}
+
+.contact-form-wrapper .input-group input,
+.contact-form-wrapper .input-group textarea {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+}
+
+.contact-form-wrapper .input-group input:focus,
+.contact-form-wrapper .input-group textarea:focus {
+    background: var(--white);
+    border-color: var(--primary);
+}
+
+/* Reusing .input-group and .btn-submit from Payment Modal styling */
+
 /* ===== Footer ===== */
 footer {
     background: #111827;
@@ -795,6 +904,12 @@ footer {
         width: 100%;
         max-width: 100%;
         padding: 1.5rem;
+    }
+
+    .contact-container {
+        grid-template-columns: 1fr;
+        padding: 2rem;
+        gap: 2rem;
     }
 }
 
