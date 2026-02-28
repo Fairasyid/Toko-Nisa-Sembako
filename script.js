@@ -59,7 +59,7 @@ const openPayment = (productName, price) => {
     modalProductName.textContent = productName;
     modalProductPrice.textContent = formatRupiah(price);
     modalTotalPrice.textContent = formatRupiah(price + 10000); // Admin/Shipping mock fee
-    
+
     // For success message
     successProduct.textContent = productName;
 
@@ -89,3 +89,140 @@ paymentForm.addEventListener('submit', (e) => {
         successMessage.classList.remove('hidden');
     }, 1500);
 });
+
+// --- Cart Logic ---
+let cart = [];
+
+const cartBtn = document.getElementById('cartBtn');
+const cartBadge = document.getElementById('cartBadge');
+const cartSidebar = document.getElementById('cartSidebar');
+const cartOverlay = document.getElementById('cartOverlay');
+const cartItemsContainer = document.getElementById('cartItems');
+const cartTotalPriceEl = document.getElementById('cartTotalPrice');
+const checkoutBtn = document.querySelector('.btn-checkout');
+
+// Toggle Cart Sidebar
+cartBtn.addEventListener('click', () => {
+    cartSidebar.classList.add('open');
+    cartOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+});
+
+window.closeCart = () => {
+    cartSidebar.classList.remove('open');
+    cartOverlay.classList.remove('active');
+    document.body.style.overflow = 'auto';
+};
+
+// Add to Cart Function
+window.addToCart = (id, name, price, image) => {
+    const existingItem = cart.find(item => item.id === id);
+
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({ id, name, price, image, quantity: 1 });
+    }
+
+    updateCartIcon();
+    renderCart();
+
+    // Pulse animation for badge
+    cartBadge.classList.remove('pulse-badge');
+    void cartBadge.offsetWidth; // Trigger reflow
+    cartBadge.classList.add('pulse-badge');
+};
+
+// Update Cart Icon Badge
+const updateCartIcon = () => {
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    cartBadge.textContent = totalItems;
+};
+
+// Render Cart Items
+const renderCart = () => {
+    cartItemsContainer.innerHTML = '';
+
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<div class="empty-cart-msg">Keranjang Anda masih kosong.</div>';
+        cartTotalPriceEl.textContent = 'Rp 0';
+        checkoutBtn.disabled = true;
+        return;
+    }
+
+    let totalPrice = 0;
+
+    cart.forEach(item => {
+        totalPrice += item.price * item.quantity;
+
+        const itemEl = document.createElement('div');
+        itemEl.classList.add('cart-item');
+        itemEl.innerHTML = `
+            <img src="${item.image}" alt="${item.name}">
+            <div class="cart-item-info">
+                <div class="cart-item-title">${item.name}</div>
+                <div class="cart-item-price">${formatRupiah(item.price)}</div>
+                <div class="cart-item-qty">
+                    <button class="qty-btn" onclick="updateQty(${item.id}, -1)">-</button>
+                    <span class="qty-display">${item.quantity}</span>
+                    <button class="qty-btn" onclick="updateQty(${item.id}, 1)">+</button>
+                </div>
+            </div>
+            <button class="remove-item" onclick="removeFromCart(${item.id})"><i class="fa-solid fa-trash"></i></button>
+        `;
+        cartItemsContainer.appendChild(itemEl);
+    });
+
+    cartTotalPriceEl.textContent = formatRupiah(totalPrice);
+    checkoutBtn.disabled = false;
+};
+
+// Update Quantity
+window.updateQty = (id, change) => {
+    const item = cart.find(item => item.id === id);
+    if (item) {
+        item.quantity += change;
+        if (item.quantity <= 0) {
+            removeFromCart(id);
+        } else {
+            updateCartIcon();
+            renderCart();
+        }
+    }
+};
+
+// Remove from Cart
+window.removeFromCart = (id) => {
+    cart = cart.filter(item => item.id !== id);
+    updateCartIcon();
+    renderCart();
+};
+
+// Checkout Integration
+window.openPaymentFromCart = () => {
+    closeCart();
+
+    // Calculate total
+    const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const itemNames = cart.map(item => `${item.quantity}x ${item.name}`).join(', ');
+
+    // Reset Form
+    paymentForm.reset();
+    paymentForm.classList.remove('hidden');
+    successMessage.classList.add('hidden');
+    btnSubmit.disabled = false;
+    btnText.classList.remove('hidden');
+    loader.classList.add('hidden');
+
+    // Set Data
+    modalProductName.textContent = `${cart.length} Jenis Produk`;
+    modalProductPrice.textContent = formatRupiah(totalPrice);
+    modalTotalPrice.textContent = formatRupiah(totalPrice + 10000); // Admin/Shipping mock fee
+
+    // For success message
+    successProduct.textContent = itemNames;
+
+    // Show Modal
+    modalOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+};
