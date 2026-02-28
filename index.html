@@ -29,9 +29,9 @@
             <li><a href="#products">Produk</a></li>
             <li><a href="#contact">Kontak</a></li>
         </ul>
-        <div class="cart-icon">
+        <div class="cart-icon" id="cartBtn">
             <i class="fa-solid fa-cart-shopping"></i>
-            <span class="badge">0</span>
+            <span class="badge" id="cartBadge">0</span>
         </div>
     </nav>
 
@@ -69,8 +69,8 @@
                     <p class="desc">Beras pulen berkualitas unggul tanpa bahan pengawet.</p>
                     <div class="price-row">
                         <span class="price">Rp 75.000</span>
-                        <button class="btn-buy" onclick="openPayment('Beras Premium 5kg', 75000)">Beli <i
-                                class="fa-solid fa-cart-plus"></i></button>
+                        <button class="btn-buy" onclick="addToCart(1, 'Beras Premium 5kg', 75000, 'assets/beras.png')">+
+                            Keranjang <i class="fa-solid fa-cart-plus"></i></button>
                     </div>
                 </div>
             </div>
@@ -88,8 +88,8 @@
                     <p class="desc">Minyak kelapa sawit murni, jernih dan sehat untuk keluarga.</p>
                     <div class="price-row">
                         <span class="price">Rp 35.000</span>
-                        <button class="btn-buy" onclick="openPayment('Minyak Goreng 2L', 35000)">Beli <i
-                                class="fa-solid fa-cart-plus"></i></button>
+                        <button class="btn-buy" onclick="addToCart(2, 'Minyak Goreng 2L', 35000, 'assets/minyak.png')">+
+                            Keranjang <i class="fa-solid fa-cart-plus"></i></button>
                     </div>
                 </div>
             </div>
@@ -107,8 +107,8 @@
                     <p class="desc">Gula tebu pilihan, putih bersih dan tingkat kemanisan pas.</p>
                     <div class="price-row">
                         <span class="price">Rp 16.000</span>
-                        <button class="btn-buy" onclick="openPayment('Gula Pasir 1kg', 16000)">Beli <i
-                                class="fa-solid fa-cart-plus"></i></button>
+                        <button class="btn-buy" onclick="addToCart(3, 'Gula Pasir 1kg', 16000, 'assets/gula.png')">+
+                            Keranjang <i class="fa-solid fa-cart-plus"></i></button>
                     </div>
                 </div>
             </div>
@@ -126,14 +126,34 @@
                     <p class="desc">Telur ayam negeri segar langsung dari peternakan.</p>
                     <div class="price-row">
                         <span class="price">Rp 28.000</span>
-                        <button class="btn-buy" onclick="openPayment('Telur Ayam 1kg', 28000)">Beli <i
-                                class="fa-solid fa-cart-plus"></i></button>
+                        <button class="btn-buy" onclick="addToCart(4, 'Telur Ayam 1kg', 28000, 'assets/telur.png')">+
+                            Keranjang <i class="fa-solid fa-cart-plus"></i></button>
                     </div>
                 </div>
             </div>
 
         </div>
     </section>
+
+    <!-- Cart Sidebar -->
+    <div id="cartSidebar" class="cart-sidebar glass-effect">
+        <div class="cart-header">
+            <h2>Keranjang Belanja</h2>
+            <button class="close-cart" onclick="closeCart()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be rendered here via JS -->
+            <div class="empty-cart-msg">Keranjang Anda masih kosong.</div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotalPrice" class="cart-total-price">Rp 0</span>
+            </div>
+            <button class="btn-checkout" onclick="openPaymentFromCart()">Checkout Sekarang</button>
+        </div>
+    </div>
+    <div id="cartOverlay" class="cart-overlay" onclick="closeCart()"></div>
 
     <!-- Payment Modal (Glassmorphism) -->
     <div id="paymentModal" class="modal-overlay">
