@@ -226,3 +226,25 @@ window.openPaymentFromCart = () => {
     modalOverlay.classList.add('active');
     document.body.style.overflow = 'hidden';
 };
+
+// --- Contact Form Handling ---
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Change button text to indicate loading
+        const btn = contactForm.querySelector('.btn-submit');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = 'Mengirim... <i class="fa-solid fa-spinner fa-spin" style="margin-left: 8px;"></i>';
+        btn.disabled = true;
+
+        // Simulate API sending delay
+        setTimeout(() => {
+            alert('Terima kasih! Pesan Anda telah berhasil dikirim. Kami akan membalasnya segera.');
+            contactForm.reset();
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }, 1200);
+    });
+}
